@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <div id="app">
+    姓：<input type="text" v-model="first">
+    名：<input type="text" v-model="last">
+    =<span>{{fullName}}</span>
+
+    <button @click="chang">改名卡</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          first: "",
+          last: ''
+        }
+      },
+      methods: {
+        chang() {
+          this.fullName = '吕布'
+        }
+      },
+      computed: {
+        // 简写只有获取 没有配置设置的逻辑
+        // fullName() {
+        //   return this.first + this.last
+        // }
+        // 完成写法 获取+设置
+        fullName: {
+          get() {
+            return this.first + this.last
+          },
+          set(value) {
+            // value.slice(0, 1)
+            // value.slice(1)
+            this.first = value.slice(0, 1)
+            this.last = value.slice(1)
+          }
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

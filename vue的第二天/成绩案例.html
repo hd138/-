@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .red {
+      color: red;
+    }
+
+    table,
+    tr,
+    td,
+    th {
+      border: 1px solid;
+    }
+
+    th {
+      text-align: center;
+    }
+
+    td {
+      text-align: center;
+      padding: 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <table>
+
+      <tbody v-if="list.length>0">
+        <tr>
+          <th>编号</th>
+          <th>科目</th>
+          <th>成绩</th>
+          <th>操作</th>
+        </tr>
+        <tr v-for="(item, index) in list" :key="item.id">
+          <td>{{index}}</td>
+          <td>{{item.name}}</td>
+          <td :class="{red:item.num<60}">{{item.num}}</td>
+          <td><a @click.prevent="del(item.id)" href="">删除</a></td>
+        </tr>
+      </tbody>
+
+
+
+      <tbody v-else>
+        <td>暂无数据</td>
+      </tbody>
+      <td>总分：{{sum}}</td>
+      <td>平均分：{{ment}}</td>
+
+    </table>
+    科目：<input type="text" v-model.trim="subject">
+    <br>
+    分数：<input type="text" v-model.number="score">
+    <br>
+    <button @click="add">添加</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          list: [
+            {
+              id: 1, name: '语文', num: 79
+            },
+            {
+              id: 2, name: '英语', num: 35
+            },
+            {
+              id: 3, name: '数学', num: 58
+            },
+          ],
+          subject: '',
+          score: '',
+
+        }
+      },
+      methods: {
+        del(id) {
+          this.list = this.list.filter(item => item.id !== id)
+        },
+        add() {
+          if (this.subject == '') {
+            alert('请输入科目')
+            return
+          }
+          if (this.score == '') {
+            alert('请输入成绩')
+            return
+          }
+          this.list.push({
+            id: +new Date(),
+            name: this.subject,
+            num: this.score
+          })
+          this.subject = ''
+          this.score = ''
+        }
+
+      },
+      computed: {
+        sum() {
+          return this.list.reduce((sum, item) => sum + item.num, 0)
+        },
+        ment() {
+
+          return this.list.length == 0 ? 0 : (this.sum / this.list.length).toFixed(2)
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

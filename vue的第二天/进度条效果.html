@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .progress {
+      margin: 30px;
+      width: 400px;
+      height: 40px;
+      background-color: #000;
+      border-radius: 25px;
+      padding: 3px;
+    }
+
+    .inner {
+      width: 50%;
+      height: 40px;
+      border-radius: 25px;
+      background-color: #409eff;
+      text-align: right;
+      position: relative;
+      transition: all 1s;
+    }
+
+    .inner span {
+      top: 100%;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="progress">
+      <div class="inner" :style="{width:percent+'%'}">
+        <span>{{percent}}%</span>
+      </div>
+    </div>
+    <button @click="addP(25)">25%</button>
+    <button @click="addP(50)">50%</button>
+    <button @click="addP(75)">75%</button>
+    <button @click="addP(100)">100%</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          percent: 0
+        }
+      },
+      methods: {
+        addP(pect) {
+          this.percent = pect
+        }
+      },
+    })
+  </script>
+
+</body>
+
+</html>

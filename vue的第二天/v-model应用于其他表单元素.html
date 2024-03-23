@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <h3>码农学习网</h3>
+    姓名
+    <input v-model="username" type="text">
+    <br>
+    是否单身
+    <input v-model="isSinglr" type="checkbox">
+    <br>
+    性别
+    <input v-model="genter" name="genter" type="radio" value="1">男
+    <input v-model="genter" name="genter" type="radio" value="2">女
+    <br>
+    所在城市
+    <select v-model="cityID">
+      <option value="101">北京</option>
+      <option value="102">上海</option>
+      <option value="103">成都</option>
+      <option value="104">武汉</option>
+      <option value="105">南京</option>
+    </select>
+    <br>
+    自我描述
+    <br>
+    <textarea v-model="dese"></textarea>
+    <br>
+    <button>立即注册</button></button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          username: '',
+          isSinglr: false,
+          genter: '1',
+          cityID: '102',
+          dese: ''
+        }
+      },
+    })
+  </script>
+
+</body>
+
+</html>
