@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .main {
+      width: 500px;
+      min-height: 100px;
+      background-color: #f5f5f5;
+    }
+
+    .head {
+      width: 100%;
+      height: 100%;
+    }
+
+    .head ul {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+    }
+
+    ul li {
+      list-style: none;
+    }
+
+    ul li a {
+      text-decoration: none;
+    }
+
+    .body ul {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .body ul li {
+      display: flex;
+      align-items: center;
+    }
+
+    .body ul li img {
+      min-width: 50px;
+    }
+
+    .body ul li span {
+      min-width: 40px;
+      min-height: 20px;
+      background-color: #fff;
+      text-align: center;
+    }
+
+    .foord {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .active {
+      background-color: cornflowerblue !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div v-if="fruitList.length>0" class="main">
+      <div class="head">
+        <ul>
+          <li>选中</li>
+          <li>图片</li>
+          <li>单价</li>
+          <li>个数</li>
+          <li>小计</li>
+          <li>操作</li>
+        </ul>
+      </div>
+      <div class="body">
+        <ul :class="{active:item.isChecked}" v-for="(item, index) in fruitList" :key="item.id">
+          <li><input v-model="item.isChecked" type="checkbox"></li>
+          <li><img :src="item.icon" alt=""></li>
+          <li>{{item.price}}</li>
+          <li>
+            <button :disabled="item.num<=1" @click="sub(item.id)" class="de">-</button>
+            <span class="my-input">{{item.num}}</span>
+            <button @click="add(item.id)" class="in">+</button>
+          </li>
+          <li>{{item.num*item.price}}</li>
+          <li><a href="" @click.prevent="del(item.id)">删除</a></li>
+        </ul>
+      </div>
+      <div class="foord">
+        <div><input type="checkbox" v-model="isAll">全选</div>
+        <div>总价：￥{{totalp}} <button>结算({{totalc}}})</button></div>
+      </div>
+    </div>
+    <div v-else class="empty">空空如也</div>
+  </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const defal = [{
+      id: 1,
+      icon: '',
+      isChecked: true,
+      num: 2,
+      price: 6
+    },
+    {
+      id: 2,
+      icon: '',
+      isChecked: false,
+      num: 1,
+      price: 6
+    },
+    {
+      id: 3,
+      icon: '',
+      isChecked: true,
+      num: 3,
+      price: 6
+    }]
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          fruitList: JSON.parse(localStorage.getItem('list')) || defal
+        }
+      },
+      methods: {
+        del(id) {
+          this.fruitList = this.fruitList.filter(item => item.id !== id)
+        },
+        sub(id) {
+          const fruit = this.fruitList.find(item => item.id === id)
+          fruit.num--
+        },
+        add(id) {
+          const fruit = this.fruitList.find(item => item.id === id)
+          fruit.num++
+        }
+      },
+      computed: {
+        // 默认计算属性 只能获取不能设置，要设置需要写完整写法
+        // isAll() {
+        //   return this.fruitList.every(item => item.isChecked)
+        // }
+        isAll: {
+          get() {
+            return this.fruitList.every(item => item.isChecked)
+          },
+          set(value) {
+            // 基于拿到的布尔值,要让所有的小选框 同步状态
+            this.fruitList.forEach(item => {
+              item.isChecked = value
+            });
+          }
+        },
+        totalc() {
+          return this.fruitList.reduce((sum, item) => {
+            if (item.isChecked) {
+              return sum + item.num
+            } else {
+              return sum
+            }
+          }, 0)
+        },
+        totalp() {
+          return this.fruitList.reduce((sum, item) => {
+            if (item.isChecked) {
+              return sum + item.num * item.price
+            } else {
+              return sum
+            }
+          }, 0)
+        }
+      },
+      watch: {
+        fruitList: {
+          deep: true,
+          immediate: true,
+          handler(newValue) {
+            localStorage.setItem('list', JSON.stringify(newValue))
+            console.log(newValue);
+          }
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

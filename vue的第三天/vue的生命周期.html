@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <h3>{{title}}</h3>
+    <button @click="count++">+</button>
+    <span>{{count}}</span>
+    <button @click="count--">-</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // 接口地址：https://applet-base-api-t.itheima.net/api/translate
+    const app = new Vue({
+      el: '#app',
+      data: {
+        title: '计数器',
+        count: 0
+      },
+      // 创建之前（准备数据）
+      beforeCreate() {
+        console.log('beforeCreate 响应式数据准备好之前', this.count);// undefined
+      },
+      created() {
+        console.log('created 响应式数据准备好之后', this.count);
+      },
+      // 挂载阶段 (渲染阶段)
+      beforeMount() {
+        console.log('beforeMount 响应式数据挂载(模板渲染)之前', document.querySelector('h3'));
+      },
+      mounted() {
+        console.log('mounted 响应式数据挂载(模板渲染)之后', document.querySelector('h3'));
+      },
+      // 数据更新阶段(修改数据才会触发)
+      beforeUpdate() {
+        console.log('beforeUpdate 响应数据更新之前', document.querySelector('span').innerHTML);
+      },
+      updated() {
+        console.log('updated 响应数据更新之后', document.querySelector('span').innerHTML);
+      },
+      // 销毁阶段
+      beforeDestroy() {
+        console.log('beforeDestroy 销毁之前');
+        // 清楚掉一些vue以外的资源占用.定时器,延时器等等
+      },
+      destroyed() {
+        console.log('destroyed 销毁之后');
+      },
+
+
+    })
+  </script>
+
+</body>
+
+</html>
