@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 500px;
+      min-height: 100px;
+    }
+
+    .head {
+      min-height: 30px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .body {
+      width: 100%;
+      min-height: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+
+    }
+
+    .body div {
+      min-width: 50px;
+      text-align: center;
+    }
+
+    .active {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model.trim="name" placeholder="消费名称">
+    <input type="number" v-model.number="number" placeholder="消费价格">
+    <button @click="add">添加账单</button>
+    <br>
+    <div class="box">
+      <div class="head">
+        <span>编号</span>
+        <span>名称</span>
+        <span>价格</span>
+        <span>操作</span>
+      </div>
+      <div v-for="(item, index) in list" :key="item.id" class="body">
+        <div>{{index+1}}</div>
+        <div>{{item.name}}</div>
+        <div :class="{active:item.price<=500}">{{item.price.toFixed(2)}}</div>
+        <div><a href="" @click.prevent="del(item.id)">删除</a></div>
+      </div>
+      <div class="forder">消费总计：{{sumPrice}}</div>
+    </div>
+    <div id="main" style="width: 600px;height:400px;"></div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        list: [],
+        name: '',
+        number: '',
+      },
+      created() {
+        this.getList()
+        // 发送请求,请求数据
+        // const res = await axios.get('https://applet-base-api-t.itheima.net/bill', {
+        //   params: {
+        //     creator: '码农'
+        //   }
+        // })
+        // // 将数据更新给data中搞得list
+        // this.list = res.data.data
+        // console.log(res);
+      },
+      mounted() {
+        this.myChart = echarts.init(document.querySelector('#main'))
+        this.myChart.setOption({
+          // 标题
+          title: {
+            text: '消费账单',
+
+            left: 'center'
+          },
+          // 提示框
+          tooltip: {
+            trigger: 'item'
+          },
+          // 图例
+          legend: {
+            orient: 'vertical',
+            left: 'left'
+          },
+          series: [
+            {
+              name: '消费账单',
+              type: 'pie',
+              radius: '50%',
+              data: [
+
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        })
+      },
+      methods: {
+        async getList() {
+          const res = await axios.get('https://applet-base-api-t.itheima.net/bill', {
+            params: {
+              creator: '码农'
+            }
+          })
+          // 将数据更新给data中搞得list
+          this.list = res.data.data
+          this.myChart.setOption({
+            series: [
+              {
+                data: this.list.map(item => ({ value: item.price, name: item.name }))
+              }
+            ]
+          })
+          console.log(res);
+        },
+        async add() {
+          if (this.name == '') {
+            alert('请输入你的消费名称')
+            return
+          }
+          if (typeof this.number !== 'number') {
+            alert('请输入你的消费价格')
+            return
+          }
+          const res = await axios.post('https://applet-base-api-t.itheima.net/bill', {
+            name: this.name,
+            price: this.number,
+            creator: '码农'
+          })
+          this.getList()
+          console.log(res);
+          // this.list.push({
+          //   id: +new Date,
+          //   name: this.name,
+          //   price: this.number,
+          //   creator: '码农'
+          // })
+          this.name = ''
+          this.number = ''
+        },
+        async del(id) {
+          // this.list = this.list.filter(item => item.id !== id)
+          const res = await axios.delete(`https://applet-base-api-t.itheima.net/bill/${id}`
+
+          )
+          console.log(res);
+          this.getList()
+
+        }
+      },
+      computed: {
+        sumPrice() {
+          return this.list.reduce((sum, item) => {
+            return sum += item.price
+          }, 0)
+        }
+      }
+
+
+    })
+  </script>
+
+</body>
+
+</html>
