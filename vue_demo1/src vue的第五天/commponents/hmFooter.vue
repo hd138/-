@@ -1,5 +1,7 @@
 <template>
-  <div class="hm-head">我是头部</div>
+  <div class="hm-head">我是底部
+    <hmButtom></hmButtom>
+  </div>
 </template>
 
 <script>

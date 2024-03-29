@@ -3,9 +3,13 @@
 import Vue from 'vue';
 // 导入app.vue
 import App from './App.vue';
+// 导入全局
+import hmButtom from './commponents/hmButtom';
 
 // 提示当前处于什么环境（生产/开发）
 Vue.config.productionTip = false;
+
+Vue.component('hmButtom', hmButtom);
 
 // 全局注册组件
 // vue 实例化，提供render方法>基于app.vue创建结构渲染index.html
