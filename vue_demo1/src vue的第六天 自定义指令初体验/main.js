@@ -4,8 +4,6 @@ import Vue from 'vue';
 // 导入app.vue
 import App from './App.vue';
 
-// import axios from 'axios';
-// Vue.prototype.$axios = axios;
 // 提示当前处于什么环境（生产/开发）
 Vue.config.productionTip = false;
 
