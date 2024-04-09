@@ -1,98 +1,55 @@
 <template>
   <div id="app">
-    <div class=" div" v-loading="isLoading">
-      <div v-for="(item) in list" :key="item.id" class="box ">
-        <div class="span">
-          <span>{{ item.title }}</span>
-          <span>{{ item.source }}{{ item.time }}</span>
-        </div>
-        <img :src="item.img" alt="">
-      </div>
-    </div>
+    <MyTable :data="list">
+      <template #head>
+        <td>编号</td>
+        <td>图片</td>
+        <td>名称</td>
+        <td>标签</td>
+      </template>
+      <template #body="obj">
+        <td>{{ obj.index + 1 }}</td>
+        <td><img src="https://yanxuan-item.nosdn.127.net/f8c37ffa41ab1eb84bff499e1f6acfc7.png" alt=""></td>
+        <td>{{ obj.item.name }}</td>
+        <td>
+          <!-- <MyTag @handlchun="handlchun2" :bq="bq"></MyTag> -->
+          <MyTag v-model="obj.item.tag"></MyTag>
+        </td>
+      </template>
+    </MyTable>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import MyTable from './commponents/MyTable.vue'
+import MyTag from './commponents/MyTag.vue';
 
 export default {
   name: 'App',
   data() {
     return {
-      list: [],
-      isLoading: true
+      // 测试组件功能
+      // bq: '茶壶',
+      // bq2: '111',
+      list: [
+        { id: 1, name: '张三', age: 14, tag: '茶壶' },
+        { id: 2, name: '里斯', age: 15, tag: '男鞋' },
+        { id: 3, name: '王五请', age: 19, tag: '儿童服饰' }
+      ],
     }
   },
-  directives: {
-    loading: {
-      inserted(el, binding) {
-
-        binding.value ? el.classList.add('acyive') : el.classList.remove('acyive')
-      },
-      update(el, binding) {
-        binding.value ? el.classList.add('acyive') : el.classList.remove('acyive')
-      }
-    }
-
-  },
-  // mounted() {
-  //   this.$refs.inp.focus()
-  // },
-  async created() {
-    // 发送请求,请求数据
-    const res = await axios.get('http://hmajax.itheima.net/api/news')
-    // 将数据更新给data中搞得list
-    this.list = res.data.data
-    this.isLoading = false
-    console.log(res.data.data);
-  },
-
 
   components: {
-
+    MyTable,
+    MyTag
   },
   methods: {
-
+    // handlchun2(id) {
+    //   this.bq = id
+    // }
   },
 
 }
 </script>
 
-<style lang="less">
-.box {
-  width: 500px;
-  min-height: 200px;
-  display: flex;
-
-}
-
-.div {
-  position: relative;
-}
-
-
-
-.span {
-  width: 65%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-img {
-  width: 35%;
-  object-fit: cover;
-}
-
-.acyive::before {
-  content: 'loading';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 1px solid;
-  background-color: pink;
-}
-</style>
+<style lang="less"></style>
