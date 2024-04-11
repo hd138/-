@@ -24,9 +24,7 @@ export default {
   },
   data() {
     return {
-      // 测试组件功能
-      bq: '茶壶',
-      bq2: '111',
+
     }
   },
   components: {

@@ -1,8 +1,9 @@
 <template>
   <div>
     <div class="box">
-      <router-link to="/home">首页</router-link>
-      <router-link to="/Search">搜索</router-link>
+      <a href="#/find">发现音乐</a>
+      <a href="#/my">我的音乐</a>
+      <a href="#/friend">朋友</a>
     </div>
     <div class="top">
       <router-view></router-view>
@@ -38,7 +39,7 @@ export default {
 
 <style lang="less">
 .box {
-  width: 240px;
+  width: 360px;
   height: 60px;
   display: flex;
   align-items: center;
@@ -46,31 +47,13 @@ export default {
 
   a {
     text-decoration: none;
-    padding: 0 22px;
+    padding: 0 20px;
     width: 80px;
     text-align: center;
     color: #fff;
     line-height: 60px;
     border-left: 1px solid #000;
     background-color: #333333;
-
-
-  }
-
-  a.exact-active {
-    background-color: pink;
-  }
-
-  a:hover {
-    background-color: purple;
   }
 }
-
-/*
-  router-link-active 模糊匹配 (用的更多一点 )
-  to='/find' => 地址栏/find /find/my
-
-  router-link-exact-active 精确匹配
-  to='/find' => 地址栏 /find
-*/
 </style>
