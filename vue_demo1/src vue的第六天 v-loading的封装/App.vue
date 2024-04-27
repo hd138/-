@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class=" div" v-loading="isLoading">
+    <div class="div" v-loading="isLoading">
       <div v-for="(item) in list" :key="item.id" class="box ">
         <div class="span">
           <span>{{ item.title }}</span>
