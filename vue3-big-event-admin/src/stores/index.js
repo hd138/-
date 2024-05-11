@@ -15,4 +15,4 @@ export default pinia
 // export { useCounterStore }
 
 export * from './modules/user'
-export * from './modules/counter'
+export * from './modules/counter' 
