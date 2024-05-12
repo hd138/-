@@ -4,9 +4,9 @@
 //    const router = useRouter()
 // 2. 获取路由参数route useRoute
 //    const route = useRoute
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { useRoute, useRouter } from 'vue-router'
 // import { useUserStore, useCounterStore } from '@/stores'
-
 const router = useRouter()
 const route = useRoute()
 // const goList = () => {
@@ -23,7 +23,9 @@ const route = useRoute()
 
 <template>
   <div>
-    <router-view></router-view>
+    <el-config-provider :locale="zhCn">
+      <router-view></router-view>
+    </el-config-provider>
   </div>
 </template>
 
