@@ -44,8 +44,17 @@ const onEditArticle = (row) => {
   articleEditRef.value.open(row)
 }
 // 删除
-const onDeleteArticle = () => {
+const onDeleteArticle = async (row) => {
+  await ElMessageBox.confirm('你确认删除该文章信息吗？', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  await artDelService(row.id)
+  ElMessage({ type: 'success', message: '删除成功' })
+  getArticleList()
 }
+
 // 搜索 
 const onSearch = () => {
   params.value.pagenum = 1
@@ -57,6 +66,15 @@ const onReset = () => {
   params.value.pagenum = 1
   params.value.cate_id = ''
   params.value.state = ''
+  getArticleList()
+}
+
+// 添加或者编辑成功的回调
+const onSuccess = (type) => {
+  if (type === 'add') {
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
+  }
   getArticleList()
 }
 
@@ -120,7 +138,7 @@ const onReset = () => {
       :page-sizes="[2, 3, 4, 5, 10]" layout=" total, sizes, prev, pager, next" background :total="total"
       @size-change="onSizeChange" @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end" />
     <!-- 抽屉 -->
-    <article-edit ref="articleEditRef"></article-edit>
+    <article-edit ref="articleEditRef" @success="onSuccess"></article-edit>
   </page-container>
 </template>
 

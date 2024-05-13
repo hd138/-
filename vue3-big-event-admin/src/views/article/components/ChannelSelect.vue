@@ -5,6 +5,9 @@ import { ref } from "vue";
 defineProps({
   modelValue: {
     type: [Number, String]
+  },
+  width: {
+    type: String
   }
 })
 
@@ -20,7 +23,8 @@ getChannleList()
 </script> 
 
 <template>
-  <el-select style="width:150px" :modelValue="modelValue" @update:modelValue="emit('update:modelValue', $event)">
+  <el-select :style="{ width }" style="width:150px" :modelValue="modelValue"
+    @update:modelValue="emit('update:modelValue', $event)">
     <el-option v-for="channel in channelList" :label="channel.cate_name" :key="channel.id"
       :value="channel.id"></el-option>
 
